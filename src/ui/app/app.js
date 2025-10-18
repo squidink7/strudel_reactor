@@ -1,14 +1,16 @@
-import './cors-redirect';
-import './App.css';
+// import './cors-redirect';
+import { Editor } from '../editor/editor'
+import { MusicControls } from '../music-controls/musicControls'
+import './app.css';
 import { initStrudel, note, hush, evalScope, getAudioContext, webaudioOutput, registerSynthSounds, initAudioOnFirstClick, transpiler } from "@strudel/web";
 import { useEffect, useRef } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
 import { registerSoundfonts } from '@strudel/soundfonts';
-import { stranger_tune } from './tunes';
+import { stranger_tune } from '../../tunes';
 
 let globalEditor = null;
 
-
+const appName = "Strudel Mixer"
 
 export function SetupButtons() {
 
@@ -26,7 +28,6 @@ export function SetupButtons() {
   }
   )
 }
-
 
 
 export function ProcAndPlay() {
@@ -94,24 +95,18 @@ export default function StrudelDemo() {
 
   return (
     <div>
-      <h2>Strudel Demo</h2>
+      <h2>{appName}</h2>
       <main>
 
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
               <label htmlFor="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>
-              <textarea className="form-control" rows="15" id="proc" ></textarea>
+              <Editor />
             </div>
             <div className="col-md-4">
 
-              <nav>
-                <button id="process" className="btn btn-outline-primary">Preprocess</button>
-                <button id="process_play" className="btn btn-outline-primary">Proc & Play</button>
-                <br />
-                <button id="play" className="btn btn-outline-primary">Play</button>
-                <button id="stop" className="btn btn-outline-primary">Stop</button>
-              </nav>
+              <MusicControls />
             </div>
           </div>
           <div className="row">
