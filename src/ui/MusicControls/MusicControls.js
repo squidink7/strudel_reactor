@@ -8,7 +8,7 @@ export function MusicControls({handlePlayStop, handleShowCode}) {
 			<button 
 				className={`btn rounded-circle ${isPlaying ? 'btn-danger' : 'btn-success'} d-flex align-items-center justify-content-center`}
 				style={{ width: '60px', height: '60px', fontSize: '24px' }}
-				onClick={handlePlayStop}
+				onClick={() => {setIsPlaying(!isPlaying); handlePlayStop(!isPlaying)}}
 			>
 				{isPlaying ? '■' : '▶'}
 			</button>

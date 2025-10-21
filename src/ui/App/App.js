@@ -2,11 +2,8 @@
 import { Editor } from '../Editor/Editor'
 import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
-import { initStrudel } from "@strudel/web";
+import { initStrudel, evaluate, hush } from "@strudel/web";
 import { useEffect, useRef, useState } from "react";
-import { StrudelMirror } from '@strudel/codemirror';
-import { registerSoundfonts } from '@strudel/soundfonts';
-import { stranger_tune } from '../../tunes';
 import { PartCard } from '../PartCard/PartCard';
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
@@ -85,12 +82,20 @@ function StrudelDemo() {
 				</div>
 			</div>
 			
-			<MusicControls handlePlayStop={() => {}} handleShowCode={() => setShowCodeDialog(true)} />
+			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} />
 			
 			{/* Code Dialog */}
 			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} />)}
 		</div>
 	);
+
+	function togglePlaying(playing) {
+		if (playing) {
+			evaluate('note("c a f e").jux(rev)')
+		} else {
+			hush()
+		}
+	}
 
 	function showArrangement(id) {
 		if (id == -1) {
