@@ -76,8 +76,7 @@ function StrudelDemo() {
 				<Sidebar showArrangement={showArrangement} arrangements={arrangements} />
 				
 				{/* Main Content Area */}
-				<div className="flex-1 bg-white">
-					{/* {currentView} */}
+				<div className="flex-1 bg-white vw-100">
 					{mainView}
 				</div>
 			</div>
