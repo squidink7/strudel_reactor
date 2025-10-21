@@ -74,7 +74,7 @@ function StrudelDemo() {
 
 	return (
 		<div className="d-flex flex-column vh-100">
-			<div className="d-flex flex-1">
+			<div className="d-flex flex-1 vh-100">
 				{/* Sidebar */}
 				<Sidebar showArrangement={showArrangement} arrangements={arrangements} />
 				
