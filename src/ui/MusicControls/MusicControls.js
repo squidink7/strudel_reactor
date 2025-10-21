@@ -1,11 +1,23 @@
-export function MusicControls({playFn, pauseFn, processFn}) {
+import { useState } from "react";
+
+export function MusicControls({handlePlayStop, handleShowCode}) {
+	const [isPlaying, setIsPlaying] = useState(false);
+
 	return (
-		<nav>
-			<button id="process" className="btn btn-outline-primary" onClick={processFn}>Preprocess</button>
-			<button id="process_play" className="btn btn-outline-primary" onClick={() => {processFn();playFn();}}>Proc & Play</button>
-			<br />
-			<button id="play" className="btn btn-outline-primary" onClick={playFn}>Play</button>
-			<button id="stop" className="btn btn-outline-primary" onClick={pauseFn}>Stop</button>
-		</nav>
+		<div className="d-flex justify-content-center align-items-center p-3 bg-light border-top">
+			<button 
+				className={`btn rounded-circle ${isPlaying ? 'btn-danger' : 'btn-success'} d-flex align-items-center justify-content-center`}
+				style={{ width: '60px', height: '60px', fontSize: '24px' }}
+				onClick={handlePlayStop}
+			>
+				{isPlaying ? '■' : '▶'}
+			</button>
+			<button 
+				className="btn btn-outline-secondary ms-3"
+				onClick={handleShowCode}
+			>
+				Show Code
+			</button>
+		</div>
 	)
 }
