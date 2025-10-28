@@ -8,6 +8,7 @@ import { PartCard } from '../PartCard/PartCard';
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { CodeDialog } from '../CodeDialog/CodeDialog';
+import { SimplePart, CodePart } from '../../data/Part'
 
 let globalEditor = null;
 
@@ -20,54 +21,50 @@ function StrudelDemo() {
 	}, []);
 
 	// State
-	const [mainView, setMainView] = useState((<div />));
-	const [showCodeDialog, setShowCodeDialog] = useState(false);
 	
 	const [parts, setParts] = useState([
-    {
-      id: 1,
-      title: "Piano Melody",
-      type: "simple",
-      name: "Grand Piano",
-      notes: ["C4", "E4", "G4", "C5"],
-      enabled: true,
-      gain: 0.7,
-    },
-    {
-      id: 2,
-      title: "Bass Line",
-      type: "custom",
-      name: "Synth Bass",
-      notes: ["F#3", "A3", "C#4", "F#4"],
-      enabled: false,
-      gain: 0.85,
-    },
-    {
-      id: 3,
-      title: "Drum Kit",
-      type: "simple",
-      name: "Acoustic Drums",
-      notes: ["Kick", "Snare", "Hi-Hat", "Crash"],
-      enabled: true,
-      gain: null
-    }
-  ]);
+		new SimplePart(
+			"Piano Melody",
+			"Grand Piano",
+			"C4 E4 G4 C5",
+		),
+		new CodePart(
+			"Bass Line",
+			"F#3 A3 C#4 F#4",
+		),
+		new SimplePart(
+			"Drum Kit",
+			"Acoustic Drums",
+			"Kick Snare Hi-Hat Crash",
+		)
+	]);
 	const [arrangements, setArrangements] = useState(
-	[
-		{ id: 1, name: "Verse" },
-		{ id: 2, name: "Chorus" },
-		{ id: 3, name: "Bridge" },
-		{ id: 4, name: "Verse" },
-		{ id: 5, name: "Chorus" },
-		{ id: 6, name: "Outro" },
-		{ id: 7, name: "Intro" },
-		{ id: 8, name: "Verse" },
-	]
+		[
+			{ id: 1, name: "Verse" },
+			{ id: 2, name: "Chorus" },
+			{ id: 3, name: "Bridge" },
+			{ id: 4, name: "Verse" },
+			{ id: 5, name: "Chorus" },
+			{ id: 6, name: "Outro" },
+			{ id: 7, name: "Intro" },
+			{ id: 8, name: "Verse" },
+		]
 	);
-
-	const handleCloseDialog = () => {
-		setShowCodeDialog(false);
-	};
+	
+	function addPart(type) {
+		let part;
+		if (type == "simple") {
+			part = new SimplePart("New Part","","");
+		} else {
+			part = new CodePart("New Part", "");
+		}
+		
+		parts.push(part);
+		return part;
+	}
+	
+	const [mainView, setMainView] = useState((<PartsView parts={parts} setParts={setParts} />));
+	const [showCodeDialog, setShowCodeDialog] = useState(false);
 
 	return (
 		<div className="d-flex flex-column vh-100">
@@ -76,7 +73,7 @@ function StrudelDemo() {
 				<Sidebar showArrangement={showArrangement} arrangements={arrangements} />
 				
 				{/* Main Content Area */}
-				<div className="flex-1 bg-white vw-100">
+				<div className="flex-1 bg-light vw-100">
 					{mainView}
 				</div>
 			</div>
