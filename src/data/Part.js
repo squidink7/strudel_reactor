@@ -38,6 +38,7 @@ export class CodePart {
 		this.title = title;
 		this.type = 'code';
 		this.code = code;
+		this.enabled = true;
 	}
 
 	// returns JS-safe unique name
