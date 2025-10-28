@@ -1,21 +1,68 @@
+import { useState } from "react";
 import { PartCard } from "../PartCard/PartCard";
+import { SimplePartEditor, CodePartEditor } from "../PartEditor/PartEditor";
 
-export function PartsView({ parts, setParts }) {
+export function PartsView({ parts, setParts, newPart }) {
+	const [editingPartId, setEditingPartId] = useState(0);
+	
+	function updatePart(newPart) {
+		let newParts = parts;
+		
+		for (let i=0; i<newParts.length; i++) {
+			if (newParts[i].id == newPart.id) {
+				newParts[i] = newPart;
+			}
+		}
+
+		setParts(newParts);
+	}
+
 	return (
 		<div className="container p-0">
 			<div className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
 				<h2 className="mb-0">Parts</h2>
-				<button className="btn btn-primary">
-					+ Add Part
-				</button>
+				<div>
+					<button className="btn btn-outline-primary mx-2" onClick={() => {
+						let part = newPart("code");
+						setEditingPartId();
+					}}>
+						+ Add Code Part
+					</button>
+					<button className="btn btn-primary mx-2" onClick={() => {
+						let part = newPart("simple");
+						setEditingPartId();
+					}}>
+						+ Add Simple Part
+					</button>
+				</div>
 			</div>
 			<div className="row p-3">
 			{parts.map(part => (
 				<div key={part.id} className="col-md-6 col-lg-4">
-					<PartCard instrument={part} />
+					<PartCard part={part} edit={() => setEditingPartId(part.id)} />
 				</div>
 			))}
 			</div>
+
+			{/* Part editor */}
+			{editingPartId != null && editingPartId != 0 && (
+				getCurrentPart().type == 'simple' ? (
+					<SimplePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} />
+				) : (
+					<CodePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} />
+				)
+			)}
 		</div>
 	)
+
+	function getCurrentPart() {
+		let found = null;
+		parts.forEach(p => {
+			if (p.id == editingPartId) {
+				found = p;
+			}
+		})
+
+		return found;
+	}
 }
