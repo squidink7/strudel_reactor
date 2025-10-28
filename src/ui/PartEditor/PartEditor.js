@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { instruments } from '../../data/Instruments'
 
-export function SimplePartEditor ({ part, onSave, onCancel }) {
+export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   const [title, setTitle] = useState(part.title);
   const [type, setType] = useState(part.type);
   const [instrument, setInstrument] = useState(part.instrument);
@@ -18,10 +18,10 @@ export function SimplePartEditor ({ part, onSave, onCancel }) {
       gain
     };
     onSave(updatedpart);
+    onClose();
   };
 
   function convertToCode(part) {
-
   }
 
   return (
@@ -30,7 +30,7 @@ export function SimplePartEditor ({ part, onSave, onCancel }) {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Edit Instrument</h5>
-            <button type="button" className="btn-close" onClick={onCancel}></button>
+            <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
             <div className="mb-3">
@@ -84,7 +84,66 @@ export function SimplePartEditor ({ part, onSave, onCancel }) {
             <button className="btn btn-secondary">
               Convert to Code
             </button>
-            <button className="btn btn-outline-secondary" onClick={onCancel}>
+            <button className="btn btn-outline-secondary" onClick={onClose}>
+              Cancel
+            </button>
+            <button className="btn btn-primary" onClick={handleSave}>
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export function CodePartEditor ({ part, onSave, onClose }) {
+  const [title, setTitle] = useState(part.title);
+  const [code, setCode] = useState(part.gain);
+
+  function handleSave() {
+    const updatedpart = {
+      ...part,
+      title,
+      code
+    };
+    onSave(updatedpart);
+    onClose();
+  };
+
+  return (
+    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+      <div className="modal-dialog modal-lg">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Edit Instrument</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
+          </div>
+          <div className="modal-body">
+            <div className="mb-3">
+              <label className="form-label">Title</label>
+              <input 
+                type="text" 
+                className="form-control" 
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            
+            <div className="mb-3">
+              <label className="form-label">Code</label>
+              <textarea 
+                className="form-control font-monospace" 
+                rows="10"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Enter your music code here..."
+              />
+              <div className="form-text">Write strudel code above.</div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button className="btn btn-outline-secondary" onClick={onClose}>
               Cancel
             </button>
             <button className="btn btn-primary" onClick={handleSave}>
