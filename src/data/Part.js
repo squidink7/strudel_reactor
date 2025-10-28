@@ -10,12 +10,12 @@ function partId() {
 export class SimplePart {
 	constructor(title, instrument, notes) {
 		this.id = partId();
-    	this.title = title;
+		this.title = title;
 		this.type = 'simple';
-    	this.instrument = '';
-    	this.notes = notes.split(' ');
-    	this.enabled = true;
-    	this.gain = 1.0;
+		this.instrument = instrument;
+		this.notes = notes.split(' ');
+		this.enabled = true;
+		this.gain = 1.0;
 	}
 
 	// returns JS-safe unique name
