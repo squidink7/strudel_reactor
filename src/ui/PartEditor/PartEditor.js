@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { instruments } from '../../data/Instruments'
+import { instruments } from '../../data/Instruments';
 
 export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   const [title, setTitle] = useState(part.title);
@@ -9,17 +9,19 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   const [gain, setGain] = useState(part.gain);
 
   function handleSave() {
-    const updatedpart = {
-      ...part,
-      title,
-      type,
-      instrument,
-      notes: notes.split(' ').filter(note => note.trim() !== ''),
-      gain
-    };
-    onSave(updatedpart);
+    let newPart = part;
+    newPart.title = title;
+    newPart.instrument = instrument;
+    newPart.notes = notes.split(' ').filter(note => note.trim() !== '');
+    newPart.gain = gain;
+    onSave(newPart);
     onClose();
-  };
+  }
+
+  function handleDelete() {
+    onDelete(part.id);
+    onClose();
+  }
 
   function convertToCode(part) {
   }
@@ -50,7 +52,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
                 value={instrument}
                 onChange={(e) => setInstrument(e.target.value)}
               >
-                {instruments.map((inst, index) => (
+                {instruments.forEach((inst, index) => (
                   <option key={index} value={inst}>{inst}</option>
                 ))}
               </select>
@@ -81,6 +83,9 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
             </div>
           </div>
           <div className="modal-footer">
+            <button className="btn btn-outline-danger" onClick={handleDelete}>
+                Delete
+            </button>
             <button className="btn btn-secondary">
               Convert to Code
             </button>
@@ -97,19 +102,22 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   );
 };
 
-export function CodePartEditor ({ part, onSave, onClose }) {
+export function CodePartEditor ({ part, onSave, onClose, onDelete }) {
   const [title, setTitle] = useState(part.title);
-  const [code, setCode] = useState(part.gain);
+  const [code, setCode] = useState(part.code);
 
   function handleSave() {
-    const updatedpart = {
-      ...part,
-      title,
-      code
-    };
-    onSave(updatedpart);
+    let newPart = part;
+    newPart.title = title;
+    newPart.code = code;
+    onSave(newPart);
     onClose();
-  };
+  }
+
+  function handleDelete() {
+    onDelete(part.id);
+    onClose();
+  }
 
   return (
     <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
@@ -143,6 +151,9 @@ export function CodePartEditor ({ part, onSave, onClose }) {
             </div>
           </div>
           <div className="modal-footer">
+            <button className="btn btn-outline-danger" onClick={handleDelete}>
+                Delete
+            </button>
             <button className="btn btn-outline-secondary" onClick={onClose}>
               Cancel
             </button>
