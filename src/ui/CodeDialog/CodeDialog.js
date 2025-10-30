@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function CodeDialog({ handleCloseDialog }) {
+export function CodeDialog({ code, handleCloseDialog }) {
 	return (
 		<div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
 			<div className="modal-dialog modal-lg">
@@ -11,7 +11,7 @@ export function CodeDialog({ handleCloseDialog }) {
 					</div>
 					<div className="modal-body">
 						<pre className="bg-light p-3 rounded">
-							{`[song code goes here]`}
+							{code}
 						</pre>
 					</div>
 					<div className="modal-footer">
