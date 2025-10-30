@@ -1,20 +1,29 @@
-class Arrangement {
-	constructor() {
-		this.sections = []
+let id = 0;
+
+function arrangementId() {
+	id++
+	return id
+}
+
+export class Arrangement {
+	constructor(name) {
+		this.id = arrangementId();
+		this.name = name;
+		this.sections = [];
 	}
 
 	addSection(parts, duration) {
-		this.sections.push([parts, duration])
+		this.sections.push([parts, duration]);
 	}
 
 	getSections() {
-		return this.sections
+		return this.sections;
 	}
 
 	toStrudel() {
-		let code = 'arrange('
+		let code = 'arrange(';
 		
-		sections.forEach(s => {
+		this.sections.forEach(s => {
 			let partsCode = 'stack(';
 			s[0].forEach(p => {
 				partsCode += ',';
