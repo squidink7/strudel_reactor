@@ -17,6 +17,20 @@ export function PartsView({ parts, setParts, newPart }) {
 		setParts(newParts);
 	}
 
+	function deletePart(partId) {
+		console.log("deleting part " + partId);
+		let newParts = [];
+		
+		for (let i=0; i<parts.length; i++) {
+			if (parts[i].id != partId) {
+				newParts.push(parts[i]);
+			}
+		}
+
+		console.log(newParts);
+		setParts(newParts);
+	}
+
 	return (
 		<div className="container p-0">
 			<div className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
@@ -47,9 +61,9 @@ export function PartsView({ parts, setParts, newPart }) {
 			{/* Part editor */}
 			{editingPartId != null && editingPartId != 0 && (
 				getCurrentPart().type == 'simple' ? (
-					<SimplePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} />
+					<SimplePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} onDelete={(id) => deletePart(id)} />
 				) : (
-					<CodePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} />
+					<CodePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} onDelete={(id) => deletePart(id)} />
 				)
 			)}
 		</div>
