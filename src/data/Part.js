@@ -24,11 +24,15 @@ export class SimplePart {
 	}
 
 	toStrudel() {
-		return `$${this.codeName()}: ${this.toCode()}`;
+		let prefix = this.enabled ? '' : '_';
+
+		return `$${prefix}${this.codeName()}: ${this.toCode()}`;
 	}
 
 	toCode() {
-		return '';
+		let notes = this.notes.join(' ');
+
+		return `s(${this.instrument}).n(${notes}).gain(${this.gain});`;
 	}
 }
 
