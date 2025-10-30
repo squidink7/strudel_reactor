@@ -1,7 +1,7 @@
 // import './cors-redirect';
 import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
-import { initStrudel, evaluate, hush } from "@strudel/web";
+import { initStrudel, evaluate, hush, samples } from "@strudel/web";
 import { useEffect, useRef, useState } from "react";
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
@@ -16,7 +16,12 @@ const appName = "Strudel Reactor"
 function StrudelDemo() {
 	// Init strudel on page load
 	useEffect(() => {
-		initStrudel();
+		initStrudel({
+			prebake: () => {
+				samples('github:tidalcycles/dirt-samples');
+				// samples('github:geikha/tidal-drum-machines');
+			}
+		});
 	}, []);
 
 	// State
@@ -24,16 +29,16 @@ function StrudelDemo() {
 	const [parts, setParts] = useState([
 		new SimplePart(
 			"Piano Melody",
-			"Grand Piano",
+			"piano",
 			"C4 E4 G4 C5",
 		),
 		new CodePart(
-			"Bass Line",
-			"F#3 A3 C#4 F#4",
+			"Drums",
+			's("bd:1 bd:2,hh:0 hh:1 hh:2 hh:3")',
 		),
 		new SimplePart(
 			"Drum Kit",
-			"Acoustic Drums",
+			"bd",
 			"Kick Snare Hi-Hat Crash",
 		)
 	]);
@@ -75,7 +80,7 @@ function StrudelDemo() {
 				<div className="flex-1 bg-light vw-100">
 					{
 						arrangementId == -1 ? (
-							<PartsView parts={parts} setParts={setParts} />
+							<PartsView parts={parts} setParts={setParts} newPart={addPart} />
 						) : (
 							<div></div>
 						)
