@@ -1,14 +1,13 @@
 // import './cors-redirect';
-import { Editor } from '../Editor/Editor'
 import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
 import { initStrudel, evaluate, hush } from "@strudel/web";
 import { useEffect, useRef, useState } from "react";
-import { PartCard } from '../PartCard/PartCard';
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { CodeDialog } from '../CodeDialog/CodeDialog';
-import { SimplePart, CodePart } from '../../data/Part'
+import { SimplePart, CodePart } from '../../data/Part';
+import { Arrangement } from '../../data/Arrangement';
 
 let globalEditor = null;
 
@@ -40,17 +39,17 @@ function StrudelDemo() {
 	]);
 	const [arrangements, setArrangements] = useState(
 		[
-			{ id: 1, name: "Verse" },
-			{ id: 2, name: "Chorus" },
-			{ id: 3, name: "Bridge" },
-			{ id: 4, name: "Verse" },
-			{ id: 5, name: "Chorus" },
-			{ id: 6, name: "Outro" },
-			{ id: 7, name: "Intro" },
-			{ id: 8, name: "Verse" },
+			new Arrangement("Verse"),
+			new Arrangement("Chorus"),
+			new Arrangement("Bridge"),
+			new Arrangement("Verse"),
+			new Arrangement("Chorus"),
+			new Arrangement("Outro"),
+			new Arrangement("Intro"),
+			new Arrangement("Verse"),
 		]
 	);
-	
+
 	function addPart(type) {
 		let part;
 		if (type == "simple") {
@@ -63,42 +62,53 @@ function StrudelDemo() {
 		return part;
 	}
 	
-	const [mainView, setMainView] = useState((<PartsView parts={parts} setParts={setParts} />));
+	const [arrangementId, setArrangementId] = useState(-1);
 	const [showCodeDialog, setShowCodeDialog] = useState(false);
 
 	return (
 		<div className="d-flex flex-column vh-100">
 			<div className="d-flex flex-1 vh-100">
 				{/* Sidebar */}
-				<Sidebar showArrangement={showArrangement} arrangements={arrangements} />
+				<Sidebar arrangementId={arrangementId} setArrangement={setArrangementId} arrangements={arrangements} />
 				
 				{/* Main Content Area */}
 				<div className="flex-1 bg-light vw-100">
-					{mainView}
+					{
+						arrangementId == -1 ? (
+							<PartsView parts={parts} setParts={setParts} />
+						) : (
+							<div></div>
+						)
+					}
 				</div>
 			</div>
 			
 			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} />
 			
 			{/* Code Dialog */}
-			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} />)}
+			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} code={generateSongCode()} />)}
 		</div>
 	);
 
 	function togglePlaying(playing) {
 		if (playing) {
-			evaluate('note("c a f e").jux(rev)')
+			console.log('Playing song:');
+			console.log(generateSongCode());
+			evaluate(generateSongCode());
 		} else {
-			hush()
+			hush();
 		}
 	}
 
-	function showArrangement(id) {
-		if (id == -1) {
-			setMainView((<PartsView parts={parts} setParts={setParts} />))
-		} else {
-			setMainView((<div></div>))
-		}
+	function generateSongCode() {
+		let code = '';
+
+		parts.forEach(part => {
+			code += part.toStrudel();
+			code += '\n';
+		});
+
+		return code;
 	}
 }
 
