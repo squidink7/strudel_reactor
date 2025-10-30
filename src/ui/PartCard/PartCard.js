@@ -16,10 +16,10 @@ export function PartCard({ part, edit }) {
     <div className="card mb-4">
       <div className="card-header d-flex justify-content-between align-items-center">
         <div className='d-flex'>
-          <h5 className="card-title mb-0">{part.title}</h5>
-          <div className='badge mx-2' style={{backgroundColor: part.type === 'simple' ? '#0eddbe' : '#cd50dd'}}>
-            {part.type.charAt(0).toUpperCase() + part.type.slice(1)}
-          </div>
+          <label className='badge d-inline-flex align-items-center' style={{backgroundColor: part.type === 'simple' ? '#0eddbe' : '#cd50dd'}}>
+            <span>{part.type.charAt(0).toUpperCase() + part.type.slice(1)}</span>
+          </label>
+          <h5 className="card-title mb-0 mx-2">{part.title}</h5>
         </div>
         <button className="btn btn-primary" onClick={() => edit(part.id)}>Edit</button>
       </div>
@@ -37,7 +37,7 @@ export function PartCard({ part, edit }) {
               checked={isEnabled}
               onChange={handleToggle}
             />
-            <label className="form-check-label" htmlFor={`toggle-${part.id}`}>
+            <label className="form-check-label">
               {isEnabled ? 'ON' : 'OFF'}
             </label>
           </div>
@@ -59,15 +59,12 @@ export function PartCard({ part, edit }) {
             
               <div className="mt-3">
                 <div className="d-flex justify-content-between mb-1">
-                  <label htmlFor={`gain-${part.id}`} className="form-label">
-                    Gain
-                  </label>
+                  <h6 className="card-subtitle mb-1 text-muted">Gain</h6>
                   <span className="text-muted">{(gain * 100).toFixed(0)}%</span>
                 </div>
                 <input
                   type="range"
                   className="form-range"
-                  id={`gain-${part.id}`}
                   min="0"
                   max="1"
                   step="0.01"
