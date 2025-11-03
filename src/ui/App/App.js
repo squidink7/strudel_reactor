@@ -55,6 +55,32 @@ function StrudelDemo() {
 		]
 	);
 
+	function loadFile(file) {
+		new Promise((resolve, reject) => {
+		const fileReader = new FileReader();
+
+		fileReader.onload = event => {
+		if (event.target) {
+			let saveData = JSON.parse(event.target.result);
+			setParts(saveData[0]);
+			setArrangements(saveData[1]);
+		}
+    }
+
+    fileReader.onerror = error => reject(error);
+    fileReader.readAsText(file);
+  })
+	}
+
+	function saveFile() {
+		const element = document.createElement("a");
+		const file = new Blob([JSON.stringify([parts, arrangements])], {type: 'application/json'});
+		element.href = URL.createObjectURL(file);
+		element.download = "composition.json";
+		document.body.appendChild(element);
+		element.click();
+	}
+
 	function addPart(type) {
 		let part;
 		if (type == "simple") {
@@ -88,7 +114,7 @@ function StrudelDemo() {
 				</div>
 			</div>
 			
-			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} />
+			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} onSave={saveFile} onLoad={loadFile} />
 			
 			{/* Code Dialog */}
 			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} code={generateSongCode()} />)}

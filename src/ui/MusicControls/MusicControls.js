@@ -1,23 +1,38 @@
 import { useState } from "react";
 
-export function MusicControls({handlePlayStop, handleShowCode}) {
+export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad}) {
 	const [isPlaying, setIsPlaying] = useState(false);
 
+	function handleLoad(event) {
+		if (event.target.files) {
+			onLoad(event.target.files[0])
+  		}
+	}
+
 	return (
-		<div className="d-flex justify-content-center align-items-center p-3 bg-light border-top">
-			<button 
-				className={`btn rounded-circle ${isPlaying ? 'btn-danger' : 'btn-success'} d-flex align-items-center justify-content-center`}
-				style={{ width: '60px', height: '60px', fontSize: '24px' }}
-				onClick={() => {setIsPlaying(!isPlaying); handlePlayStop(!isPlaying)}}
-			>
-				{isPlaying ? '■' : '▶'}
-			</button>
-			<button 
-				className="btn btn-outline-secondary ms-3"
-				onClick={handleShowCode}
-			>
-				Show Code
-			</button>
+		<div className="d-flex justify-content-between align-items-center p-3 bg-light border-top">
+			<div className="d-flex gap-2">
+				<button className="btn btn-outline-primary" onClick={onSave}>
+					Save
+				</button>
+				<label htmlFor="file-load-button" className="btn btn-outline-secondary">Load</label>
+				<input className="d-none" type="file" accept=".json,application/json" onChange={handleLoad} id="file-load-button" />
+			</div>
+			<div className="d-flex align-items-center">
+				<button 
+					className={`btn rounded-circle ${isPlaying ? 'btn-danger' : 'btn-success'} d-flex align-items-center justify-content-center`}
+					style={{ width: '60px', height: '60px', fontSize: '24px' }}
+					onClick={() => {setIsPlaying(!isPlaying); handlePlayStop(!isPlaying)}}
+				>
+					{isPlaying ? '■' : '▶'}
+				</button>
+				<button 
+					className="btn btn-outline-secondary ms-3"
+					onClick={handleShowCode}
+				>
+					Show Code
+				</button>
+			</div>
 		</div>
 	)
 }
