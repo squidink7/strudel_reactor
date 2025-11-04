@@ -8,24 +8,22 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import { CodeDialog } from '../CodeDialog/CodeDialog';
 import { SimplePart, CodePart } from '../../data/Part';
 import { Arrangement } from '../../data/Arrangement';
-
-let globalEditor = null;
+import { ArrangementsView } from '../Arrangements/ArrangementsView';
 
 const appName = "Strudel Reactor"
 
-function StrudelDemo() {
+function App() {
 	// Init strudel on page load
 	useEffect(() => {
 		initStrudel({
 			prebake: () => {
 				samples('github:tidalcycles/dirt-samples');
-				// samples('github:geikha/tidal-drum-machines');
 			}
 		});
 	}, []);
 
 	// State
-	
+	const [playing, setPlaying] = useState(false);
 	const [parts, setParts] = useState([
 		new SimplePart(
 			"Piano Melody",
@@ -61,9 +59,32 @@ function StrudelDemo() {
 
 		fileReader.onload = event => {
 		if (event.target) {
-			let saveData = JSON.parse(event.target.result);
-			setParts(saveData[0]);
+			let saveData;
+			try {
+				saveData = JSON.parse(event.target.result);
+			} catch (error) {
+				alert("Invalid save file!");
+				return;
+			}
+			let parts = [];
+			// ensure loaded parts are actually part classes.
+			saveData[0].forEach(p => {
+				if (p.type == "simple") {
+					parts.push(Object.setPrototypeOf(p, SimplePart.prototype));
+				}
+				else {
+					let newP = new CodePart();
+					parts.push(Object.setPrototypeOf(p, CodePart.prototype));
+				}
+			});
+			setParts(parts);
+			let arrangements = [];
+			// ensure loaded arrangements are actually arrangement classes.
+			saveData[1].forEach(a => {
+				arrangements.push(Object.setPrototypeOf(a, Arrangement.prototype));
+			});
 			setArrangements(saveData[1]);
+			
 		}
     }
 
@@ -72,6 +93,7 @@ function StrudelDemo() {
   })
 	}
 
+	// Save application state as json
 	function saveFile() {
 		const element = document.createElement("a");
 		const file = new Blob([JSON.stringify([parts, arrangements])], {type: 'application/json'});
@@ -100,15 +122,15 @@ function StrudelDemo() {
 		<div className="d-flex flex-column vh-100">
 			<div className="d-flex flex-1 vh-100">
 				{/* Sidebar */}
-				<Sidebar arrangementId={arrangementId} setArrangement={setArrangementId} arrangements={arrangements} />
+				<Sidebar arrangementId={arrangementId} setArrangementId={setArrangementId} arrangements={arrangements} />
 				
 				{/* Main Content Area */}
 				<div className="flex-1 bg-light vw-100">
 					{
 						arrangementId == -1 ? (
-							<PartsView parts={parts} setParts={setParts} newPart={addPart} />
+							<PartsView parts={parts} setParts={(parts) => {setParts(parts); updateSong();}} newPart={addPart} />
 						) : (
-							<div></div>
+							<ArrangementsView arrangement={getArrangement(arrangementId)} updateArrangement={(a) => updateArrangement(a)} />
 						)
 					}
 				</div>
@@ -121,7 +143,32 @@ function StrudelDemo() {
 		</div>
 	);
 
+	function getArrangement(id) {
+		for (let i=0; i<arrangements.length; i++) {
+			if (arrangements[i].id == id) {
+				return arrangements[i];
+			}
+		}
+	}
+
+	function updateArrangement(a) {
+		for (let i=0; i<arrangements.length; i++) {
+			if (arrangements[i].id == a.id) {
+				arrangements[i] = a;
+			}
+		}
+
+		setArrangements(arrangements);
+	}
+
+	function updateSong() {
+		if (playing) {
+			evaluate(generateSongCode());
+		}
+	}
+
 	function togglePlaying(playing) {
+		setPlaying(playing);
 		if (playing) {
 			console.log('Playing song:');
 			console.log(generateSongCode());
@@ -143,4 +190,4 @@ function StrudelDemo() {
 	}
 }
 
-export default StrudelDemo;
+export default App;
