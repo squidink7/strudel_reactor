@@ -10,7 +10,7 @@ export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad}) 
 	}
 
 	return (
-		<div className="d-flex justify-content-between align-items-center p-3 bg-light border-top">
+		<div className="d-flex justify-content-between align-items-center p-3 bg-light border-top" style={{ height: '10vh' }}>
 			<div className="d-flex gap-2">
 				<button className="btn btn-outline-primary" onClick={onSave}>
 					Save
@@ -26,13 +26,14 @@ export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad}) 
 				>
 					{isPlaying ? '■' : '▶'}
 				</button>
-				<button 
+				<button
 					className="btn btn-outline-secondary ms-3"
 					onClick={handleShowCode}
 				>
 					Show Code
 				</button>
 			</div>
+			<div></div>
 		</div>
 	)
 }
