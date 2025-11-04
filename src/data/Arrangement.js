@@ -12,8 +12,8 @@ export class Arrangement {
 		this.sections = [];
 	}
 
-	addSection(parts, duration) {
-		this.sections.push([parts, duration]);
+	addSection(section) {
+		this.sections.push(section);
 	}
 
 	getSections() {
@@ -34,5 +34,12 @@ export class Arrangement {
 
 		code += ');';
 		return code;
+	}
+}
+
+export class Section {
+	constructor(parts, duration) {
+		this.parts = parts;
+		this.duration = duration;
 	}
 }
