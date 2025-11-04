@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PartCard } from "../PartCard/PartCard";
-import { SimplePartEditor, CodePartEditor } from "../PartEditor/PartEditor";
+import { SimplePartEditor } from "../PartEditor/SimplePartEditor";
+import { CodePartEditor } from "../PartEditor/CodePartEditor";
 
 export function PartsView({ parts, setParts, newPart }) {
 	const [editingPartId, setEditingPartId] = useState(0);
@@ -32,42 +33,57 @@ export function PartsView({ parts, setParts, newPart }) {
 	}
 
 	return (
-		<div className="container p-0">
+		<div className="container p-0 d-flex flex-column" style={{ height: '90vh' }}>
+			{/* Header */}
 			<div className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
 				<h2 className="mb-0">Parts</h2>
 				<div>
 					<button className="btn btn-outline-primary mx-2" onClick={() => {
 						let part = newPart("code");
-						setEditingPartId();
+						setEditingPartId(part.id);
 					}}>
 						+ Add Code Part
 					</button>
 					<button className="btn btn-primary mx-2" onClick={() => {
 						let part = newPart("simple");
-						setEditingPartId();
+						setEditingPartId(part.id);
 					}}>
 						+ Add Simple Part
 					</button>
 				</div>
 			</div>
-			<div className="row p-3">
-			{parts.map(part => (
-				<div key={part.id} className="col-md-6 col-lg-4">
-					<PartCard part={part} edit={() => setEditingPartId(part.id)} />
+
+			{/* Scrollable Parts Display */}
+			<div className="flex-grow-1 overflow-auto p-3">
+				<div className="row">
+					{parts.map(part => (
+						<div key={part.id} className="col-md-6 col-lg-4 mb-3">
+							<PartCard part={part} edit={() => setEditingPartId(part.id)} onUpdate={updatePart} />
+						</div>
+					))}
 				</div>
-			))}
 			</div>
 
 			{/* Part editor */}
 			{editingPartId != null && editingPartId != 0 && (
-				getCurrentPart().type == 'simple' ? (
-					<SimplePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} onDelete={(id) => deletePart(id)} />
+				getCurrentPart().type === 'simple' ? (
+					<SimplePartEditor
+						part={getCurrentPart()}
+						onSave={(newPart) => updatePart(newPart)}
+						onClose={() => setEditingPartId(null)}
+						onDelete={(id) => deletePart(id)}
+					/>
 				) : (
-					<CodePartEditor part={getCurrentPart()} onSave={(newPart) => {updatePart(newPart)}} onClose={() => setEditingPartId(null)} onDelete={(id) => deletePart(id)} />
+					<CodePartEditor
+						part={getCurrentPart()}
+						onSave={(newPart) => updatePart(newPart)}
+						onClose={() => setEditingPartId(null)}
+						onDelete={(id) => deletePart(id)}
+					/>
 				)
 			)}
 		</div>
-	)
+	);
 
 	function getCurrentPart() {
 		let found = null;

@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 
-export function PartCard({ part, edit }) {
+export function PartCard({ part, onUpdate, edit }) {
   const [isEnabled, setIsEnabled] = useState(part.enabled);
   const [gain, setGain] = useState(part.gain || 0.8);
 
-  const handleToggle = () => {
-    setIsEnabled(!isEnabled);
+  const handleToggle = (e) => {
+    setIsEnabled(e.target.checked);
+    part.enabled = !isEnabled;
+    onUpdate(part);
   };
 
   const handleGainChange = (e) => {
     setGain(parseFloat(e.target.value));
+    part.gain = gain;
+    onUpdate(part);
   };
 
   return (
