@@ -29,7 +29,7 @@ export class Arrangement {
 				partsCode += p.codeName() + ',';
 			});
 			partsCode += ')';
-			code += `[${partsCode}, ${s.duration}],`;
+			code += `[${s.duration}, ${partsCode}],`;
 		});
 
 		code += ');';

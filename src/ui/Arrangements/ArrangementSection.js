@@ -52,11 +52,23 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
         <span className="me-2">Duration:</span>
         <input
           type="text"
-          className="form-control"
+          className="form-control me-2"
           value={duration}
           onChange={handleDurationChange}
           style={{ width: '100px' }}
         />
+          <select 
+            className="form-select" 
+            value="Add Part"
+            onChange={(e) => addPart(e.target.value)}
+          >
+            <option key="-1" value="">Add Part</option>
+            {
+            parts.map((part, index) => (
+              <option key={index} value={part.id}>{part.title}</option>
+            ))
+            }
+          </select>
       </div>
       <div className="card-body">
         <div className="d-flex flex-wrap align-items-center">
@@ -71,18 +83,6 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
               </button>
             </div>
           ))}
-          <select 
-            className="form-select" 
-            value="Add Part"
-            onChange={(e) => addPart(e.target.value)}
-          >
-            <option key="-1" value="">Add Part</option>
-            {
-            parts.map((part, index) => (
-              <option key={index} value={part.id}>{part.title}</option>
-            ))
-            }
-          </select>
         </div>
       </div>
     </div>
