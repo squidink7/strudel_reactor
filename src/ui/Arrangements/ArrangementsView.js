@@ -6,7 +6,7 @@ export function ArrangementsView({ arrangement, updateArrangement, parts }) {
 	const [arr, setArr] = useState(arrangement);
 	
 	function updateSections(newSection) {
-		let newSections = arr.sections;
+		let newSections = [...arr.sections];
 		
 		for (let i=0; i<newSections.length; i++) {
 			if (newSections[i].parts == newSection.parts && newSections[i].duration == newSection.duration) {
@@ -51,6 +51,7 @@ export function ArrangementsView({ arrangement, updateArrangement, parts }) {
 					<ArrangementSection
 						section={s}
 						onSectionChange={updateSections}
+						parts={parts}
 						onPartAdd={undefined}
 						onPartRemove={undefined}
 					/>

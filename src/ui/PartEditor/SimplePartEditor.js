@@ -57,7 +57,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
                 value={instrument}
                 onChange={(e) => setInstrument(e.target.value)}
               >
-                {instruments.forEach((inst, index) => (
+                {instruments.map((inst, index) => (
                   <option key={index} value={inst}>{inst}</option>
                 ))}
               </select>

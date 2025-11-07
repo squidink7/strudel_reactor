@@ -1,18 +1,43 @@
 import React, { useState } from 'react';
 
-export function ArrangementSection ({ section, onSectionChange, onPartAdd, onPartRemove }) {
+export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd, onPartRemove }) {
   const [title, setTitle] = useState(section.title);
   const [duration, setDuration] = useState(section.duration);
+  const [sectionParts, setSectionParts] = useState(section.parts);
 
-  const handleTitleChange = (e) => {
+  function handleTitleChange(e) {
     setTitle(e.target.value);
-    onSectionChange({ ...section, title: e.target.value });
+    section.title = e.target.value;
+    onSectionChange(section);
   };
 
-  const handleDurationChange = (e) => {
+  function handleDurationChange(e) {
     setDuration(e.target.value);
-    onSectionChange({ ...section, duration: e.target.value });
+    section.duration = e.target.value;
+    onSectionChange(section);
   };
+
+  function addPart(partId) {
+    if (partId != "") {
+      // Get part by id
+      let part;
+      
+      parts.forEach(p => {
+        if (p.id == partId) {
+          part = p;
+        }
+      });
+
+      if (part == null) return;
+
+      // Add part to section
+      let newSectionParts = [...sectionParts]; // Create new array to force re-render
+      newSectionParts.push(part);
+      section.parts = newSectionParts;
+      setSectionParts(newSectionParts);
+      onSectionChange(section);
+    }
+  }
 
   return (
     <div className="card m-3">
@@ -35,10 +60,10 @@ export function ArrangementSection ({ section, onSectionChange, onPartAdd, onPar
       </div>
       <div className="card-body">
         <div className="d-flex flex-wrap align-items-center">
-          {section.parts.map((part, index) => (
+          {sectionParts.map((part, index) => (
             <div key={index} className="d-flex align-items-center bg-light border rounded p-2 me-2 mb-2">
               <span className="me-2">{part.title}</span>
-              <button 
+              <button
                 className="btn btn-sm btn-outline-danger"
                 onClick={() => onPartRemove(section.id, part.id)}
               >
@@ -46,12 +71,18 @@ export function ArrangementSection ({ section, onSectionChange, onPartAdd, onPar
               </button>
             </div>
           ))}
-          <button 
-            className="btn btn-outline-primary btn-sm"
-            onClick={() => onPartAdd(section.id)}
+          <select 
+            className="form-select" 
+            value="Add Part"
+            onChange={(e) => addPart(e.target.value)}
           >
-            + Add Part
-          </button>
+            <option key="-1" value="">Add Part</option>
+            {
+            parts.map((part, index) => (
+              <option key={index} value={part.id}>{part.title}</option>
+            ))
+            }
+          </select>
         </div>
       </div>
     </div>
