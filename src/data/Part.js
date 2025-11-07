@@ -24,9 +24,7 @@ export class SimplePart {
 	}
 
 	toStrudel() {
-		// let prefix = this.enabled ? '' : '_';
-		if (!this.enabled) return '';
-		return `$${this.codeName()}: ${this.toCode()}`;
+		return `const ${this.codeName()} = ${this.toCode()}`;
 	}
 
 	toCode() {
@@ -51,7 +49,6 @@ export class CodePart {
 	}
 
 	toStrudel() {
-		if (!this.enabled) return '';
-		return `$${this.codeName()}: ${this.code};`;
+		return `const ${this.codeName()} = ${this.code};`;
 	}
 }
