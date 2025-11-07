@@ -1,13 +1,14 @@
 // import './cors-redirect';
 import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
-import { initStrudel, evaluate, hush, samples } from "@strudel/web";
+import { initStrudel, evaluate, hush, samples, initAudioOnFirstClick, evalScope, registerSynthSounds } from "@strudel/web";
+import { registerSoundfonts } from "@strudel/soundfonts";
 import { useEffect, useRef, useState } from "react";
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { CodeDialog } from '../CodeDialog/CodeDialog';
 import { SimplePart, CodePart } from '../../data/Part';
-import { Arrangement } from '../../data/Arrangement';
+import { Arrangement, Section } from '../../data/Arrangement';
 import { ArrangementsView } from '../Arrangements/ArrangementsView';
 
 const appName = "Strudel Reactor"
@@ -16,7 +17,16 @@ function App() {
 	// Init strudel on page load
 	useEffect(() => {
 		initStrudel({
-			prebake: () => {
+			prebake: async () => {
+				initAudioOnFirstClick();
+				const loadModules = evalScope(
+					import('@strudel/core'),
+					import('@strudel/draw'),
+					// import('@strudel/mini'), // Importing mini breaks evaluate()
+					import('@strudel/tonal'),
+					import('@strudel/webaudio'),
+				);
+				await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
 				samples('github:tidalcycles/dirt-samples');
 			}
 		});
@@ -40,16 +50,11 @@ function App() {
 			"Kick Snare Hi-Hat Crash",
 		)
 	]);
+	const testArrangement = new Arrangement("Arrangement 1");
+	testArrangement.addSection(new Section([parts[0], parts[2]], 2));
 	const [arrangements, setArrangements] = useState(
 		[
-			new Arrangement("Verse"),
-			new Arrangement("Chorus"),
-			new Arrangement("Bridge"),
-			new Arrangement("Verse"),
-			new Arrangement("Chorus"),
-			new Arrangement("Outro"),
-			new Arrangement("Intro"),
-			new Arrangement("Verse"),
+			testArrangement,
 		]
 	);
 
@@ -128,9 +133,17 @@ function App() {
 				<div className="flex-1 bg-light vw-100">
 					{
 						arrangementId == -1 ? (
-							<PartsView parts={parts} setParts={(parts) => {setParts(parts); updateSong();}} newPart={addPart} />
+							<PartsView
+								parts={parts}
+								setParts={(parts) => {setParts(parts); updateSong();}}
+								newPart={addPart}
+							/>
 						) : (
-							<ArrangementsView arrangement={getArrangement(arrangementId)} updateArrangement={(a) => updateArrangement(a)} />
+							<ArrangementsView
+								arrangement={getArrangement(arrangementId)}
+								updateArrangement={(a) => updateArrangement(a)}
+								parts={parts}
+							/>
 						)
 					}
 				</div>
@@ -181,10 +194,25 @@ function App() {
 	function generateSongCode() {
 		let code = '';
 
+		// Generate code for all parts
 		parts.forEach(part => {
 			code += part.toStrudel();
 			code += '\n';
 		});
+
+		if (arrangementId == -1) {
+			// Play all parts
+			code += 'stack(';
+			parts.forEach(p => {
+				if (p.enabled) {
+					code += p.codeName() + ',';
+				}
+			});
+			code += ');';
+		} else {
+			// Generate code for current arrangement
+			code += getArrangement(arrangementId).toStrudel();
+		}
 
 		return code;
 	}
