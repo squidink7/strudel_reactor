@@ -36,7 +36,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Instrument</h5>
+            <h5 className="modal-title">Edit Part</h5>
             <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
