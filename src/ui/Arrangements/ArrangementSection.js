@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ArrangementSection = ({ section, onSectionChange, onPartAdd, onPartRemove }) => {
+export function ArrangementSection ({ section, onSectionChange, onPartAdd, onPartRemove }) {
   const [title, setTitle] = useState(section.title);
   const [duration, setDuration] = useState(section.duration);
 
@@ -15,7 +15,7 @@ const ArrangementSection = ({ section, onSectionChange, onPartAdd, onPartRemove 
   };
 
   return (
-    <div className="card mb-3">
+    <div className="card m-3">
       <div className="card-header d-flex align-items-center">
         <input
           type="text"

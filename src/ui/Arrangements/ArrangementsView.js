@@ -2,10 +2,10 @@ import { useState } from "react";
 import { ArrangementSection } from "./ArrangementSection";
 import { Section } from "../../data/Arrangement"
 
-export function ArrangementsView({ arrangement, updateArrangement }) {
+export function ArrangementsView({ arrangement, updateArrangement, parts }) {
 	const [arr, setArr] = useState(arrangement);
 	
-	function updateArrangement(newSection) {
+	function updateSections(newSection) {
 		let newSections = arr.sections;
 		
 		for (let i=0; i<newSections.length; i++) {
@@ -18,7 +18,7 @@ export function ArrangementsView({ arrangement, updateArrangement }) {
 		setArr(arr);
 	}
 
-	function deleteArrangement(section) {
+	function deleteSection(section) {
 		console.log("deleting section " + section);
 		let newSections = [];
 		
@@ -46,9 +46,14 @@ export function ArrangementsView({ arrangement, updateArrangement }) {
 				</div>
 			</div>
 			<div className="col">
-			{arr.sections.map(arr => (
-				<div key={arr.id}>
-					{/* <ArrangementSection arrangement={arrangement} onSectionChange={() => updateSections(arrangement.id)} /> */}
+			{arr.sections.map(s => (
+				<div key={s.id}>
+					<ArrangementSection
+						section={s}
+						onSectionChange={updateSections}
+						onPartAdd={undefined}
+						onPartRemove={undefined}
+					/>
 				</div>
 			))}
 			</div>

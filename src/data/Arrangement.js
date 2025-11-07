@@ -25,11 +25,11 @@ export class Arrangement {
 		
 		this.sections.forEach(s => {
 			let partsCode = 'stack(';
-			s[0].forEach(p => {
-				partsCode += ',';
+			s.parts.forEach(p => {
+				partsCode += p.codeName() + ',';
 			});
 			partsCode += ')';
-			code += `[${partsCode}, ${s[1]}],`;
+			code += `[${partsCode}, ${s.duration}],`;
 		});
 
 		code += ');';
@@ -39,6 +39,7 @@ export class Arrangement {
 
 export class Section {
 	constructor(parts, duration) {
+		this.title = "Section";
 		this.parts = parts;
 		this.duration = duration;
 	}
