@@ -21,7 +21,7 @@ export function Sidebar({arrangements, arrangementId, setArrangementId, startGra
 					</ul>
 				</div>
 			</div>
-			{/* <Graph start={startGraph} /> */}
+			<Graph start={startGraph} />
 		</div>
 	)
 }

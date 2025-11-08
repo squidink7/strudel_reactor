@@ -32,7 +32,7 @@ export class Arrangement {
 			code += `[${s.duration}, ${partsCode}],`;
 		});
 
-		code += ');';
+		code += ').fft(1).analyze("a");';
 		return code;
 	}
 }

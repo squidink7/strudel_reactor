@@ -208,7 +208,7 @@ function App() {
 					code += p.codeName() + ',';
 				}
 			});
-			code += ');';
+			code += ').fft(1).analyze("a");';
 		} else {
 			// Generate code for current arrangement
 			code += getArrangement(arrangementId).toStrudel();
