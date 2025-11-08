@@ -39,6 +39,35 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
     }
   }
 
+  function removePart(partId) {
+    if (partId != "") {
+      // Get part by id
+      let newParts = [];
+      
+      sectionParts.forEach(p => {
+        if (p.id != partId) {
+          newParts.push(p);
+        }
+      });
+
+      // Add part to section
+      section.parts = newParts;
+      setSectionParts(newParts);
+      onSectionChange(section);
+    }
+  }
+
+  function unAddedParts() {
+    let result = [];
+
+    parts.forEach(p => {
+      if (!sectionParts.includes(p))
+        result.push(p);
+    });
+
+    return result;
+  }
+
   return (
     <div className="card m-3">
       <div className="card-header d-flex align-items-center">
@@ -64,7 +93,7 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
           >
             <option key="-1" value="">Add Part</option>
             {
-            parts.map((part, index) => (
+            unAddedParts().map((part, index) => (
               <option key={index} value={part.id}>{part.title}</option>
             ))
             }
@@ -77,7 +106,7 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
               <span className="me-2">{part.title}</span>
               <button
                 className="btn btn-sm btn-outline-danger"
-                onClick={() => onPartRemove(section.id, part.id)}
+                onClick={() => removePart(part.id)}
               >
                 ×
               </button>

@@ -53,7 +53,6 @@ export function ArrangementsView({ arrangement, updateArrangement, parts }) {
 						onSectionChange={updateSections}
 						parts={parts}
 						onPartAdd={undefined}
-						onPartRemove={undefined}
 					/>
 				</div>
 			))}
