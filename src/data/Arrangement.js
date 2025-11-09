@@ -39,6 +39,7 @@ export class Arrangement {
 
 export class Section {
 	constructor(parts, duration) {
+		this.id = arrangementId()
 		this.title = "Section";
 		this.parts = parts;
 		this.duration = duration;
