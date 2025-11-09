@@ -3,15 +3,13 @@ import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
 import { initStrudel, evaluate, hush, samples, initAudioOnFirstClick, evalScope, registerSynthSounds } from "@strudel/web";
 import { registerSoundfonts } from "@strudel/soundfonts";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { CodeDialog } from '../CodeDialog/CodeDialog';
 import { SimplePart, CodePart } from '../../data/Part';
 import { Arrangement, Section } from '../../data/Arrangement';
 import { ArrangementsView } from '../Arrangements/ArrangementsView';
-
-const appName = "Strudel Reactor"
 
 function App() {
 	// Init strudel on page load
@@ -74,11 +72,10 @@ function App() {
 			let parts = [];
 			// ensure loaded parts are actually part classes.
 			saveData[0].forEach(p => {
-				if (p.type == "simple") {
+				if (p.type === "simple") {
 					parts.push(Object.setPrototypeOf(p, SimplePart.prototype));
 				}
 				else {
-					let newP = new CodePart();
 					parts.push(Object.setPrototypeOf(p, CodePart.prototype));
 				}
 			});
@@ -110,7 +107,7 @@ function App() {
 
 	function addPart(type) {
 		let part;
-		if (type == "simple") {
+		if (type === "simple") {
 			part = new SimplePart("New Part","","");
 		} else {
 			part = new CodePart("New Part", "");
@@ -122,17 +119,18 @@ function App() {
 	
 	const [arrangementId, setArrangementId] = useState(-1);
 	const [showCodeDialog, setShowCodeDialog] = useState(false);
+	const [updateGraph, setUpdateGraph] = useState(false);
 
 	return (
 		<div className="d-flex flex-column vh-100">
 			<div className="d-flex flex-1 vh-100">
 				{/* Sidebar */}
-				<Sidebar arrangementId={arrangementId} setArrangementId={setArrangementId} arrangements={arrangements} />
+				<Sidebar arrangementId={arrangementId} setArrangementId={setArrangementId} arrangements={arrangements} updateGraph={updateGraph} />
 				
 				{/* Main Content Area */}
 				<div className="flex-1 bg-light vw-100">
 					{
-						arrangementId == -1 ? (
+						arrangementId === -1 ? (
 							<PartsView
 								parts={parts}
 								setParts={(parts) => {setParts(parts); updateSong();}}
@@ -152,13 +150,13 @@ function App() {
 			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} onSave={saveFile} onLoad={loadFile} />
 			
 			{/* Code Dialog */}
-			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} code={generateSongCode()} />)}
+			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} code={generateSongCode()} updateGraph={updateGraph} />)}
 		</div>
 	);
 
 	function getArrangement(id) {
 		for (let i=0; i<arrangements.length; i++) {
-			if (arrangements[i].id == id) {
+			if (arrangements[i].id === id) {
 				return arrangements[i];
 			}
 		}
@@ -166,7 +164,7 @@ function App() {
 
 	function updateArrangement(a) {
 		for (let i=0; i<arrangements.length; i++) {
-			if (arrangements[i].id == a.id) {
+			if (arrangements[i].id === a.id) {
 				arrangements[i] = a;
 			}
 		}
@@ -189,6 +187,7 @@ function App() {
 		} else {
 			hush();
 		}
+		setUpdateGraph(!updateGraph);
 	}
 
 	function generateSongCode() {
@@ -200,7 +199,7 @@ function App() {
 			code += '\n';
 		});
 
-		if (arrangementId == -1) {
+		if (arrangementId === -1) {
 			// Play all parts
 			code += 'stack(';
 			parts.forEach(p => {

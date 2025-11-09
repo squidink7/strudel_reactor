@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { Graph } from "../Graph/Graph"
 
-export function Sidebar({arrangements, arrangementId, setArrangementId, startGraph}) {
+export function Sidebar({arrangements, arrangementId, setArrangementId, onPlay, updateGraph}) {
 
 	return (
 		<div className="d-flex flex-column w-25 bg-light border-end p-3 justify-content-between">
@@ -14,14 +13,14 @@ export function Sidebar({arrangements, arrangementId, setArrangementId, startGra
 				<div className="overflow-auto" style={{ maxHeight: 'calc(100vh - 150px)' }}>
 					<ul className="list-group">
 						{arrangements.map(arrangement => (
-							<button key={arrangement.id} type="button" className={"list-group-item list-group-item-action " + (arrangement.id == arrangementId ? "active" : "")} onClick={() => setArrangementId(arrangement.id)}>
+							<button key={arrangement.id} type="button" className={"list-group-item list-group-item-action " + (arrangement.id === arrangementId ? "active" : "")} onClick={() => setArrangementId(arrangement.id)}>
 								{arrangement.name}
 							</button>
 						))}
 					</ul>
 				</div>
 			</div>
-			<Graph start={startGraph} />
+			<Graph key={updateGraph} />
 		</div>
 	)
 }
