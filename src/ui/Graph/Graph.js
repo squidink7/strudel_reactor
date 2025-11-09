@@ -3,13 +3,13 @@ import { getAnalyzerData } from '@strudel/web';
 import { useEffect, useState } from 'react';
 
 export function Graph() {
-	let setup = false;
+	let [setup,] = useState(false);
 	function setupGraph() {
 		// Strudel analyzer not setup yet.
 		if (setup) {
 			return;
 		}
-		
+
 		// Wait until audio analyzer setup
 		if (getAnalyzerData("time", "a") == undefined) {
 			window.setTimeout(setupGraph, 100);
@@ -21,9 +21,7 @@ export function Graph() {
 			let svg = select('svg');
 
 			let w = svg.node().getBoundingClientRect().width
-			w = w - 40
 			let h = svg.node().getBoundingClientRect().height
-			h = h - 25
 
 			let dataArray = getAnalyzerData("time", "a")
 
@@ -56,9 +54,9 @@ export function Graph() {
 	}
 
 	
-	// useEffect(() => {
-	setupGraph();
-	// }, []);
+	useEffect(() => {
+		setupGraph();
+	}, []);
 
 	return (
 		<div>
