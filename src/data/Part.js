@@ -30,7 +30,7 @@ export class SimplePart {
 	toCode() {
 		let notes = this.notes.join(' ');
 
-		return `s("${this.instrument}").n("${notes}").gain(${this.gain});`;
+		return `s("${(this.instrument + " ").repeat(this.notes.length).slice(0, -1)}").n("${notes}").gain(${this.gain});`;
 	}
 }
 

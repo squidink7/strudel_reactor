@@ -116,8 +116,13 @@ function App() {
 		parts.push(part);
 		return part;
 	}
+
+	function addArrangement() {
+		arrangements.push(new Arrangement("New Arrangement"));
+		setArrangements([...arrangements]);
+	}
 	
-	const [arrangementId, setArrangementId] = useState(-1);
+	const [arrangementId, setArrangementId] = useState(1);
 	const [showCodeDialog, setShowCodeDialog] = useState(false);
 	const [updateGraph, setUpdateGraph] = useState(false);
 
@@ -125,7 +130,7 @@ function App() {
 		<div className="d-flex flex-column vh-100">
 			<div className="d-flex flex-1 vh-100">
 				{/* Sidebar */}
-				<Sidebar arrangementId={arrangementId} setArrangementId={setArrangementId} arrangements={arrangements} updateGraph={updateGraph} />
+				<Sidebar arrangementId={arrangementId} setArrangementId={setArrangementId} arrangements={arrangements} newArrangement={addArrangement} updateGraph={updateGraph} />
 				
 				{/* Main Content Area */}
 				<div className="flex-1 bg-light vw-100">
@@ -138,7 +143,8 @@ function App() {
 							/>
 						) : (
 							<ArrangementsView
-								arrangement={getArrangement(arrangementId)}
+								arrangementId={arrangementId}
+								arrangements={arrangements}
 								updateArrangement={(a) => updateArrangement(a)}
 								parts={parts}
 							/>
@@ -169,7 +175,7 @@ function App() {
 			}
 		}
 
-		setArrangements(arrangements);
+		setArrangements([...arrangements]);
 	}
 
 	function updateSong() {
