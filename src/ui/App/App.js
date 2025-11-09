@@ -122,7 +122,7 @@ function App() {
 		setArrangements([...arrangements]);
 	}
 	
-	const [arrangementId, setArrangementId] = useState(1);
+	const [arrangementId, setArrangementId] = useState(-1);
 	const [showCodeDialog, setShowCodeDialog] = useState(false);
 	const [updateGraph, setUpdateGraph] = useState(false);
 

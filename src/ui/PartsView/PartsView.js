@@ -7,7 +7,7 @@ export function PartsView({ parts, setParts, newPart }) {
 	const [editingPartId, setEditingPartId] = useState(0);
 	
 	function updatePart(newPart) {
-		let newParts = parts;
+		let newParts = [...parts];
 		
 		for (let i=0; i<newParts.length; i++) {
 			if (newParts[i].id == newPart.id) {
@@ -28,8 +28,7 @@ export function PartsView({ parts, setParts, newPart }) {
 			}
 		}
 
-		console.log(newParts);
-		setParts(newParts);
+		setParts([...newParts]);
 	}
 
 	return (
