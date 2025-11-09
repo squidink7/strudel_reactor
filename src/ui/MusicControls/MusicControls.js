@@ -1,12 +1,17 @@
 import { useState } from "react";
 
-export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad}) {
+export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad, cps, setCps}) {
 	const [isPlaying, setIsPlaying] = useState(false);
 
 	function handleLoad(event) {
 		if (event.target.files) {
 			onLoad(event.target.files[0])
   		}
+	}
+
+	function handleSetCps(e) {
+		let newCps = e.target.value;
+		setCps(newCps);
 	}
 
 	return (
@@ -33,7 +38,16 @@ export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad}) 
 					Show Code
 				</button>
 			</div>
-			<div></div>
+			<div>
+				<label>CPS</label>
+				<input
+					type="text"
+					className="form-control"
+					value={cps}
+					onChange={handleSetCps}
+					style={{ maxWidth: '200px' }}
+				/>
+			</div>
 		</div>
 	)
 }

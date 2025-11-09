@@ -55,6 +55,7 @@ function App() {
 			testArrangement,
 		]
 	);
+	const [cps, setCps] = useState('');
 
 	function loadFile(file) {
 		new Promise((resolve, reject) => {
@@ -153,7 +154,7 @@ function App() {
 				</div>
 			</div>
 			
-			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} onSave={saveFile} onLoad={loadFile} />
+			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} onSave={saveFile} onLoad={loadFile} cps={cps} setCps={setCps} />
 			
 			{/* Code Dialog */}
 			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} code={generateSongCode()} updateGraph={updateGraph} />)}
@@ -197,7 +198,7 @@ function App() {
 	}
 
 	function generateSongCode() {
-		let code = '';
+		let code = `setCps(${cps});\n`;
 
 		// Generate code for all parts
 		parts.forEach(part => {
