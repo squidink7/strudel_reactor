@@ -6,7 +6,7 @@ export function ArrangementsView({ arrangementId, arrangements, updateArrangemen
 	let arrangement = getArrangement(arrangementId);
 	
 	const [arr, setArr] = useState(getArrangement(arrangementId));
-	const [arrId, setArrId] = useState(arrangementId);
+	const [sections, setSections] = useState(getArrangement(arrangementId).sections);
 	
 	function getArrangement(id) {
 		for (let i=0; i<arrangements.length; i++) {
@@ -62,14 +62,16 @@ export function ArrangementsView({ arrangementId, arrangements, updateArrangemen
 				<div>
 					<button className="btn btn-primary mx-2" onClick={() => {
 						let section = new Section();
-						getArrangement(arrangementId).addSection(section);
+						let a = getArrangement(arrangementId);
+						a.addSection(section);
+						setSections([...a.sections]);
 					}}>
 						+ Add Section
 					</button>
 				</div>
 			</div>
 			<div className="col">
-			{getArrangement(arrangementId).sections.map(s => (
+			{sections.map(s => (
 				<ArrangementSection
 					key={s.id}
 					section={s}

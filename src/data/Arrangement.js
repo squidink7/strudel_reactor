@@ -41,7 +41,15 @@ export class Section {
 	constructor(parts, duration) {
 		this.id = arrangementId()
 		this.title = "Section";
-		this.parts = parts;
-		this.duration = duration;
+		if (parts) {
+			this.parts = parts;
+		} else {
+			this.parts = [];
+		}
+		if (duration) {
+			this.duration = duration;
+		} else {
+			this.duration = 2;
+		}
 	}
 }
