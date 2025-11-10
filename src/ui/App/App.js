@@ -28,9 +28,13 @@ function App() {
 				samples('github:tidalcycles/dirt-samples');
 			}
 		});
+		// Load saved json
+		loadJson(localStorage.getItem('savedata'));
+		setLoaded(true);
 	}, []);
 
 	// State
+	const [loaded, setLoaded] = useState(false);
 	const [playing, setPlaying] = useState(false);
 	const [parts, setParts] = useState([
 		new SimplePart(
@@ -57,43 +61,31 @@ function App() {
 	);
 	const [cps, setCps] = useState('');
 
+	// Save to localstorange on change
+	useEffect(() => {
+		if (!loaded) return;
+		localStorage.setItem('savedata', JSON.stringify([parts, arrangements]));
+	}, [parts, arrangements]);
+
 	function loadFile(file) {
 		new Promise((resolve, reject) => {
-		const fileReader = new FileReader();
+			const fileReader = new FileReader();
 
-		fileReader.onload = event => {
-		if (event.target) {
-			let saveData;
-			try {
-				saveData = JSON.parse(event.target.result);
-			} catch (error) {
-				alert("Invalid save file!");
-				return;
+			fileReader.onload = event => {
+				if (event.target) {
+					try {
+						JSON.parse(event.target.result);
+					} catch (error) {
+						alert('Invalid save file!');
+						return;
+					}
+					loadJson(event.target.result)
+				}
 			}
-			let parts = [];
-			// ensure loaded parts are actually part classes.
-			saveData[0].forEach(p => {
-				if (p.type === "simple") {
-					parts.push(Object.setPrototypeOf(p, SimplePart.prototype));
-				}
-				else {
-					parts.push(Object.setPrototypeOf(p, CodePart.prototype));
-				}
-			});
-			setParts(parts);
-			let arrangements = [];
-			// ensure loaded arrangements are actually arrangement classes.
-			saveData[1].forEach(a => {
-				arrangements.push(Object.setPrototypeOf(a, Arrangement.prototype));
-			});
-			setArrangements(saveData[1]);
-			
-		}
-    }
 
-    fileReader.onerror = error => reject(error);
-    fileReader.readAsText(file);
-  })
+			fileReader.onerror = error => reject(error);
+			fileReader.readAsText(file);
+		})
 	}
 
 	// Save application state as json
@@ -104,6 +96,32 @@ function App() {
 		element.download = "composition.json";
 		document.body.appendChild(element);
 		element.click();
+	}
+
+	function loadJson(json) {
+		let saveData;
+		try {
+			saveData = JSON.parse(json);
+		} catch (error) {
+			return;
+		}
+		let parts = [];
+		// ensure loaded parts are actually part classes.
+		saveData[0].forEach(p => {
+			if (p.type === "simple") {
+				parts.push(Object.setPrototypeOf(p, SimplePart.prototype));
+			}
+			else {
+				parts.push(Object.setPrototypeOf(p, CodePart.prototype));
+			}
+		});
+		setParts(parts);
+		let arrangements = [];
+		// ensure loaded arrangements are actually arrangement classes.
+		saveData[1].forEach(a => {
+			arrangements.push(Object.setPrototypeOf(a, Arrangement.prototype));
+		});
+		setArrangements(saveData[1]);
 	}
 
 	function addPart(type) {
