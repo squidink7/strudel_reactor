@@ -3,7 +3,7 @@ import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
 import { initStrudel, evaluate, hush, samples, initAudioOnFirstClick, evalScope, registerSynthSounds, registerZZFXSounds, aliasBank } from "@strudel/web";
 import { registerSoundfonts } from "@strudel/soundfonts";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import { PartsView } from '../PartsView/PartsView';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { CodeDialog } from '../CodeDialog/CodeDialog';
@@ -16,6 +16,7 @@ function App() {
 	useEffect(() => {
 		initStrudel({
 			prebake: async () => {
+				initAudioOnFirstClick();
 				const modulesLoading = evalScope(
 					import('@strudel/core'),
 					import('@strudel/draw'),
@@ -40,7 +41,7 @@ function App() {
 					modulesLoading,
 					registerSynthSounds(),
 					registerZZFXSounds(),
-					//registerSoundfonts(),
+					registerSoundfonts(),
 					// need dynamic import here, because importing @strudel/soundfonts fails on server:
 					// => getting "window is not defined", as soon as "@strudel/soundfonts" is imported statically
 					// seems to be a problem with soundfont2
@@ -94,7 +95,7 @@ function App() {
 	useEffect(() => {
 		if (!loaded) return;
 		localStorage.setItem('savedata', JSON.stringify([parts, arrangements]));
-	}, [parts, arrangements]);
+	}, [parts, arrangements, loaded]);
 
 	function loadFile(file) {
 		new Promise((resolve, reject) => {
