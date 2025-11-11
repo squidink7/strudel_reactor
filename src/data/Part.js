@@ -28,6 +28,9 @@ export class SimplePart {
 	}
 
 	toCode() {
+		if (!this.notes) {
+			this.notes = [];
+		}
 		let notes = this.notes.join(' ');
 
 		return `s("${(this.instrument + " ").repeat(this.notes.length).slice(0, -1)}").n("${notes}").gain(${this.gain});`;

@@ -24,7 +24,8 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
     onClose();
   }
 
-  function convertToCode(part) {
+  function convertToCode() {
+    console.log(part);
     Object.setPrototypeOf(part, SimplePart.prototype);
     let codePart = new CodePart(title, part.toCode());
     codePart.id = part.id;
