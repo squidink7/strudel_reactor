@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { instruments } from '../../data/Instruments';
+import { soundMap } from '@strudel/web';
 import { SimplePart, CodePart } from '../../data/Part';
 
 export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
@@ -58,7 +58,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
                 value={instrument}
                 onChange={(e) => setInstrument(e.target.value)}
               >
-                {instruments.map((inst, index) => (
+                {Object.keys(soundMap.get()).map((inst, index) => (
                   <option key={index} value={inst}>{inst}</option>
                 ))}
               </select>

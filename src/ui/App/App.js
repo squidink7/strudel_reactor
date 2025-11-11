@@ -1,7 +1,7 @@
 // import './cors-redirect';
 import { MusicControls } from '../MusicControls/MusicControls'
 import './App.css';
-import { initStrudel, evaluate, hush, samples, initAudioOnFirstClick, evalScope, registerSynthSounds } from "@strudel/web";
+import { initStrudel, evaluate, hush, samples, initAudioOnFirstClick, evalScope, registerSynthSounds, registerZZFXSounds, aliasBank } from "@strudel/web";
 import { registerSoundfonts } from "@strudel/soundfonts";
 import { useEffect, useReducer, useState } from "react";
 import { PartsView } from '../PartsView/PartsView';
@@ -16,16 +16,45 @@ function App() {
 	useEffect(() => {
 		initStrudel({
 			prebake: async () => {
-				initAudioOnFirstClick();
-				const loadModules = evalScope(
+				const modulesLoading = evalScope(
 					import('@strudel/core'),
 					import('@strudel/draw'),
-					// import('@strudel/mini'), // Importing mini breaks evaluate()
+					import('@strudel/mini'),
 					import('@strudel/tonal'),
 					import('@strudel/webaudio'),
+					import('@strudel/codemirror'),
+					import('@strudel/hydra'),
+					import('@strudel/soundfonts'),
+					import('@strudel/midi'),
+					// import('@strudel/xen'),
+					// import('@strudel/serial'),
+					// import('@strudel/csound'),
+					// import('@strudel/osc'),
 				);
-				await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
-				samples('github:tidalcycles/dirt-samples');
+				// load samples
+				const ds = 'https://raw.githubusercontent.com/felixroos/dough-samples/main/';
+
+				// TODO: move this onto the strudel repo
+				const ts = 'https://raw.githubusercontent.com/todepond/samples/main/';
+				await Promise.all([
+					modulesLoading,
+					registerSynthSounds(),
+					registerZZFXSounds(),
+					//registerSoundfonts(),
+					// need dynamic import here, because importing @strudel/soundfonts fails on server:
+					// => getting "window is not defined", as soon as "@strudel/soundfonts" is imported statically
+					// seems to be a problem with soundfont2
+					import('@strudel/soundfonts').then(({ registerSoundfonts }) => registerSoundfonts()),
+					samples(`${ds}/tidal-drum-machines.json`),
+					samples(`${ds}/piano.json`),
+					samples(`${ds}/Dirt-Samples.json`),
+					// samples(`${ds}/uzu-drumkit.json`),
+					samples(`${ds}/vcsl.json`),
+					samples(`${ds}/mridangam.json`),
+					samples('github:tidalcycles/dirt-samples'),
+				]);
+
+				aliasBank(`${ts}/tidal-drum-machines-alias.json`);
 			}
 		});
 		// Load saved json
