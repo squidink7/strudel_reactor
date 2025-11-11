@@ -4,11 +4,11 @@ import { SimplePart, CodePart } from '../../data/Part';
 
 export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   const [title, setTitle] = useState(part.title);
-  const [type, setType] = useState(part.type);
   const [instrument, setInstrument] = useState(part.instrument);
   const [notes, setNotes] = useState(part.notes.join(' '));
   const [gain, setGain] = useState(part.gain);
 
+  // Saves and updates part
   function handleSave() {
     let newPart = part;
     newPart.title = title;
@@ -19,11 +19,13 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
     onClose();
   }
 
+  // Handles delete button press
   function handleDelete() {
     onDelete(part.id);
     onClose();
   }
 
+  // Converts simple part to code part
   function convertToCode() {
     console.log(part);
     Object.setPrototypeOf(part, SimplePart.prototype);
@@ -51,6 +53,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
               />
             </div>
             
+            {/* Instrument dropdown */}
             <div className="mb-3">
               <label className="form-label">Instrument</label>
               <select 
@@ -64,6 +67,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
               </select>
             </div>
             
+            {/* Notes textbox */}
             <div className="mb-3">
               <label className="form-label">Notes</label>
               <textarea 
@@ -75,6 +79,7 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
               <div className="form-text">Enter notes separated by spaces (e.g. C4 E4 G4)</div>
             </div>
             
+            {/* Gain slider */}
             <div className="mb-3">
               <label className="form-label">Gain: {(gain * 100).toFixed(0)}%</label>
               <input 
@@ -88,6 +93,8 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
               />
             </div>
           </div>
+
+          {/* Footer */}
           <div className="modal-footer">
             <button className="btn btn-outline-danger" onClick={handleDelete}>
                 Delete

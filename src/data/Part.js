@@ -1,5 +1,3 @@
-"use strict";
-
 let id = 0;
 
 function partId() {
