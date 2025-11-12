@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# Strudel Reactor 🥐⚛️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🎶 A music production tool for writing jams in [Strudel](https://strudel.cc) 🎶
 
-## Available Scripts
+## User Guide 🎛️
 
-In the project directory, you can run:
+Strudel Reactor works with two main concepts, Parts and Arrangements. A Part is typically a single instrument playing a repeated rhytm or melody, a building block of your song that you can turn on and off to create variation in your music. By default Strudel Reactor shows all of your parts in the Parts view.
+
+![The Parts view](doc/parts.png)
+
+Parts can either be simple or code, with simple parts being a single instrument playing a single rythm. This is enough to create some simple beats (hence the name) but to really get grooving you'll need to use a code part. These let you write your own Strudel code to be used to make all kinds of sounds.
+
+If you're new to Strudel, take a look at the getting started guide https://strudel.cc/workshop/getting-started/
+
+Once you've made some nice sounding parts, you may be getting tired of toggling them on and off manually and want to make them play at different times to really get the song going.
+
+This is where Arrangements come in. You can create a new Arrangement by clicking the appropriately named 'New Arragement' button in the left sidebar, which will open your newly created Arrangement.
+
+![The Arrangements view](doc/arrangements.png)
+
+Arrangements let you organise your parts into a structure through Sections. To create a Section, use the button at the top right of the Arrangements view, then use the Add Part dropdown to select parts to add to your section. You can also specify the duration each section will play for in the Duration box, and if you wish to organise your sections you may give each one a name by editing the text box to the left of the duration.
+
+If you at any point want to see the Strudel code for your lovely composition either out of curiosity or to use with another Strudel editor, use the `Show Code` button next to the music controls to show the your song in Strudel form.
+
+![](doc/code.png)
+
+NOTE: This will be different depending on the view you have open, if you want to see the code to play your arrangement, make sure you have that arrangement open!
+
+Strudel Reactor saves your song to your browsers local storage to ensure you don't lose your work as you go, but if you'd like to save your song as a file you can send to your friends or just as a backup you can use the `Save` and `Load` buttons on the bottom left of the application to export your composition as a JSON file.
+
+To help you feel the groove of your song theres a visualiser below the arrangements list that pulses to the rythm of your music!
+
+![](doc/graph.png)
+
+## Developer Things 🤓
+
+To run this project from source code, first clone this repository with `git clone https://github.com/squidink7/strudel_reactor.git` then `cd strudel_reactor`.
+
+Once you've cloned the repo use `npm i` to install the dependencies
+
+You can use the following commands to build and run the application:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Builds the app for production to the `build` folder.

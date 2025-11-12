@@ -53,6 +53,7 @@ function App() {
 					samples(`${ds}/vcsl.json`),
 					samples(`${ds}/mridangam.json`),
 					samples('github:tidalcycles/dirt-samples'),
+					samples('https://sirsegv.moe/sync/samples'),
 				]);
 
 				aliasBank(`${ts}/tidal-drum-machines-alias.json`);
@@ -133,6 +134,9 @@ function App() {
 		try {
 			saveData = JSON.parse(json);
 		} catch (error) {
+			return;
+		}
+		if (!saveData || saveData.length != undefined || saveData.length != 2) {
 			return;
 		}
 		let parts = [];
