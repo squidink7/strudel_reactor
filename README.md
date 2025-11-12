@@ -2,6 +2,8 @@
 
 🎶 A music production tool for writing jams in [Strudel](https://strudel.cc) 🎶
 
+🔊 Check it out at https://reactor.sirsegv.moe/ 🔊
+
 ## User Guide 🎛️
 
 Strudel Reactor works with two main concepts, Parts and Arrangements. A Part is typically a single instrument playing a repeated rhytm or melody, a building block of your song that you can turn on and off to create variation in your music. By default Strudel Reactor shows all of your parts in the Parts view.
@@ -34,7 +36,9 @@ To help you feel the groove of your song theres a visualiser below the arrangeme
 
 ## Developer Things 🤓
 
-To run this project from source code, first clone this repository with `git clone https://github.com/squidink7/strudel_reactor.git` then `cd strudel_reactor`.
+If you just want to see what all the fuss is about you can check out this project at https://reactor.sirsegv.moe/ no programming knowledge required. However if you're one of those techy types and want to run it from source, read on.
+
+To run this project from its source code, first clone this repository with `git clone https://github.com/squidink7/strudel_reactor.git` then `cd strudel_reactor`.
 
 Once you've cloned the repo use `npm i` to install the dependencies
 
@@ -48,3 +52,5 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 ### `npm run build`
 
 Builds the app for production to the `build` folder.
+
+<img src="https://www.clipartmax.com/png/full/220-2203688_it-werks-on-my-machine-works-on-my-machine-sticker.png" alt="works on my machine" width="100"/>
