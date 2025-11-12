@@ -5,6 +5,7 @@ function partId() {
 	return id
 }
 
+// Simple part designed via GUI.
 export class SimplePart {
 	constructor(title, instrument, notes) {
 		this.id = partId();
@@ -35,6 +36,8 @@ export class SimplePart {
 	}
 }
 
+
+// Part expressed in Strudel code.
 export class CodePart {
 	constructor(title, code) {
 		this.id = partId();

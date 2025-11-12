@@ -26,7 +26,7 @@ export function ArrangementsView({ arrangementId, arrangements, updateArrangemen
 		let newSections = [...arr.sections];
 		
 		for (let i=0; i<newSections.length; i++) {
-			if (newSections[i].parts == newSection.parts && newSections[i].duration == newSection.duration) {
+			if (newSections[i].id && newSection.id) {
 				newSections[i] = newSection;
 			}
 		}
@@ -35,18 +35,18 @@ export function ArrangementsView({ arrangementId, arrangements, updateArrangemen
 		setArr(arr);
 	}
 
-	function deleteSection(section) {
-		console.log("deleting section " + section);
+	function deleteSection(sectionid) {
+		console.log("deleting section " + sectionid);
 		let newSections = [];
 		
-		for (let i=0; i<arr.sections.length; i++) {
-			if (arr.sections[i].parts == section.parts && arr.sections[i].duration == section.duration) {
-				newSections.push(arr.sections[i]);
+		for (let i=0; i<sections.length; i++) {
+			if (sections[i].id !== sectionid) {
+				newSections.push(sections[i]);
 			}
 		}
 
 		arr.sections = newSections;
-		setArr(arr);
+		setSections(newSections);
 	}
 
 	return (
@@ -78,6 +78,7 @@ export function ArrangementsView({ arrangementId, arrangements, updateArrangemen
 					onSectionChange={updateSections}
 					parts={parts}
 					onPartAdd={undefined}
+					onDelete={deleteSection}
 				/>
 			))}
 			</div>

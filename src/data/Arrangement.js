@@ -5,6 +5,7 @@ function arrangementId() {
 	return id
 }
 
+// Arrangement of parts into an ordered song.
 export class Arrangement {
 	constructor(name) {
 		this.id = arrangementId();
@@ -37,6 +38,8 @@ export class Arrangement {
 	}
 }
 
+
+// Section of an arrangement.
 export class Section {
 	constructor(parts, duration) {
 		this.id = arrangementId()

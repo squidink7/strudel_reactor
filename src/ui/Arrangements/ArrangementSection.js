@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd, onPartRemove }) {
+export function ArrangementSection ({ section, onSectionChange, parts, onDelete }) {
   const [title, setTitle] = useState(section.title);
   const [duration, setDuration] = useState(section.duration);
   const [sectionParts, setSectionParts] = useState(section.parts);
@@ -18,17 +18,17 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
   };
 
   function addPart(partId) {
-    if (partId != "") {
+    if (partId !== "") {
       // Get part by id
       let part;
       
       parts.forEach(p => {
-        if (p.id == partId) {
+        if (p.id === partId) {
           part = p;
         }
       });
 
-      if (part == null) return;
+      if (part === null) return;
 
       // Add part to section
       let newSectionParts = [...sectionParts]; // Create new array to force re-render
@@ -40,12 +40,12 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
   }
 
   function removePart(partId) {
-    if (partId != "") {
+    if (partId !== "") {
       // Get part by id
       let newParts = [];
       
       sectionParts.forEach(p => {
-        if (p.id != partId) {
+        if (p.id !== partId) {
           newParts.push(p);
         }
       });
@@ -86,18 +86,24 @@ export function ArrangementSection ({ section, onSectionChange, parts, onPartAdd
           onChange={handleDurationChange}
           style={{ width: '100px' }}
         />
-          <select 
-            className="form-select" 
-            value="Add Part"
-            onChange={(e) => addPart(e.target.value)}
-          >
-            <option key="-1" value="">Add Part</option>
-            {
+        <select 
+          className="form-select me-2" 
+          value="Add Part"
+          onChange={(e) => addPart(e.target.value)}
+        >
+          <option key="-1" value="">Add Part</option>
+          {
             unAddedParts().map((part, index) => (
               <option key={index} value={part.id}>{part.title}</option>
             ))
-            }
-          </select>
+          }
+        </select>
+        <button
+          className="btn btn-sm btn-outline-danger"
+          onClick={() => onDelete(section.id)}
+        >
+          ×
+        </button>
       </div>
       <div className="card-body">
         <div className="d-flex flex-wrap align-items-center">
