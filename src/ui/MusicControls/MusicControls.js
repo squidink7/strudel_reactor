@@ -3,12 +3,14 @@ import { useState } from "react";
 export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad, cps, setCps}) {
 	const [isPlaying, setIsPlaying] = useState(false);
 
+	// Trigger load from JSON when file selected
 	function handleLoad(event) {
 		if (event.target.files) {
 			onLoad(event.target.files[0])
   		}
 	}
 
+	// Update CPS based on textbox
 	function handleSetCps(e) {
 		let newCps = e.target.value;
 		setCps(newCps);

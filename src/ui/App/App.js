@@ -1,6 +1,4 @@
-// import './cors-redirect';
 import { MusicControls } from '../MusicControls/MusicControls'
-import './App.css';
 import { initStrudel, evaluate, hush, samples, initAudioOnFirstClick, evalScope, registerSynthSounds, registerZZFXSounds, aliasBank } from "@strudel/web";
 import { registerSoundfonts } from "@strudel/soundfonts";
 import { useEffect, useState } from "react";
@@ -27,29 +25,20 @@ function App() {
 					import('@strudel/hydra'),
 					import('@strudel/soundfonts'),
 					import('@strudel/midi'),
-					// import('@strudel/xen'),
-					// import('@strudel/serial'),
-					// import('@strudel/csound'),
-					// import('@strudel/osc'),
 				);
 				// load samples
 				const ds = 'https://raw.githubusercontent.com/felixroos/dough-samples/main/';
 
-				// TODO: move this onto the strudel repo
 				const ts = 'https://raw.githubusercontent.com/todepond/samples/main/';
 				await Promise.all([
 					modulesLoading,
 					registerSynthSounds(),
 					registerZZFXSounds(),
 					registerSoundfonts(),
-					// need dynamic import here, because importing @strudel/soundfonts fails on server:
-					// => getting "window is not defined", as soon as "@strudel/soundfonts" is imported statically
-					// seems to be a problem with soundfont2
 					import('@strudel/soundfonts').then(({ registerSoundfonts }) => registerSoundfonts()),
 					samples(`${ds}/tidal-drum-machines.json`),
 					samples(`${ds}/piano.json`),
 					samples(`${ds}/Dirt-Samples.json`),
-					// samples(`${ds}/uzu-drumkit.json`),
 					samples(`${ds}/vcsl.json`),
 					samples(`${ds}/mridangam.json`),
 					samples('github:tidalcycles/dirt-samples'),
@@ -98,6 +87,7 @@ function App() {
 		localStorage.setItem('savedata', JSON.stringify([parts, arrangements]));
 	}, [parts, arrangements, loaded]);
 
+	
 	function loadFile(file) {
 		new Promise((resolve, reject) => {
 			const fileReader = new FileReader();
@@ -110,7 +100,7 @@ function App() {
 						alert('Invalid save file!');
 						return;
 					}
-					loadJson(event.target.result)
+					loadJson(event.target.result);
 				}
 			}
 
@@ -136,7 +126,7 @@ function App() {
 		} catch (error) {
 			return;
 		}
-		if (!saveData || saveData.length != undefined || saveData.length != 2) {
+		if (!saveData || saveData.length !== undefined || saveData.length !== 2) {
 			return;
 		}
 		let parts = [];
@@ -158,6 +148,7 @@ function App() {
 		setArrangements(saveData[1]);
 	}
 
+	// Create new part
 	function addPart(type) {
 		let part;
 		if (type === "simple") {
