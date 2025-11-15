@@ -1,3 +1,5 @@
+import { SimplePart, CodePart } from "./Part"
+
 let id = 0;
 
 function arrangementId() {
@@ -27,7 +29,15 @@ export class Arrangement {
 		this.sections.forEach(s => {
 			let partsCode = 'stack(';
 			s.parts.forEach(p => {
-				partsCode += p.codeName() + ',';
+				let part = p;
+				// Ensure part is part class
+				if (p.type === "simple") {
+					part = Object.setPrototypeOf(p, SimplePart.prototype);
+				}
+				else {
+					part = Object.setPrototypeOf(p, CodePart.prototype);
+				}
+				partsCode += part.codeName() + ',';
 			});
 			partsCode += ')';
 			code += `[${s.duration}, ${partsCode}],`;
