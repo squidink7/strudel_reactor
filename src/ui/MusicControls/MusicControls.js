@@ -6,7 +6,7 @@ export function MusicControls({handlePlayStop, handleShowCode, onSave, onLoad, c
 	// Trigger load from JSON when file selected
 	function handleLoad(event) {
 		if (event.target.files) {
-			onLoad(event.target.files[0])
+			onLoad(event.target.files[0]);
   		}
 	}
 

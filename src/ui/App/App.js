@@ -83,6 +83,7 @@ function App() {
 				}
 			}
 
+			
 			fileReader.onerror = error => reject(error);
 			fileReader.readAsText(file);
 		})
@@ -103,28 +104,29 @@ function App() {
 		try {
 			saveData = JSON.parse(json);
 		} catch (error) {
+			console.log("Error parsing save data");
 			return;
 		}
-		if (!saveData || saveData.length !== undefined || saveData.length !== 2) {
+		if (!saveData || saveData.length === undefined || saveData.length !== 2) {
 			return;
 		}
-		let parts = [];
+		let newParts = [];
 		// ensure loaded parts are actually part classes.
 		saveData[0].forEach(p => {
 			if (p.type === "simple") {
-				parts.push(Object.setPrototypeOf(p, SimplePart.prototype));
+				newParts.push(Object.setPrototypeOf(p, SimplePart.prototype));
 			}
 			else {
-				parts.push(Object.setPrototypeOf(p, CodePart.prototype));
+				newParts.push(Object.setPrototypeOf(p, CodePart.prototype));
 			}
 		});
-		setParts(parts);
-		let arrangements = [];
+		setParts(newParts);
+		let newArrangements = [];
 		// ensure loaded arrangements are actually arrangement classes.
 		saveData[1].forEach(a => {
-			arrangements.push(Object.setPrototypeOf(a, Arrangement.prototype));
+			newArrangements.push(Object.setPrototypeOf(a, Arrangement.prototype));
 		});
-		setArrangements(saveData[1]);
+		setArrangements(newArrangements);
 	}
 
 	// Create new part
