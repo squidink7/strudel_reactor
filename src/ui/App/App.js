@@ -56,30 +56,9 @@ function App() {
 	// State
 	const [loaded, setLoaded] = useState(false);
 	const [playing, setPlaying] = useState(false);
-	const [parts, setParts] = useState([
-		new SimplePart(
-			"Piano Melody",
-			"piano",
-			"C4 E4 G4 C5",
-		),
-		new CodePart(
-			"Drums",
-			's("bd:1 bd:2,hh:0 hh:1 hh:2 hh:3")',
-		),
-		new SimplePart(
-			"Drum Kit",
-			"bd",
-			"Kick Snare Hi-Hat Crash",
-		)
-	]);
-	const testArrangement = new Arrangement("Arrangement 1");
-	testArrangement.addSection(new Section([parts[0], parts[2]], 2));
-	const [arrangements, setArrangements] = useState(
-		[
-			testArrangement,
-		]
-	);
-	const [cps, setCps] = useState('');
+	const [parts, setParts] = useState([]);
+	const [arrangements, setArrangements] = useState([]);
+	const [cps, setCps] = useState('1.25');
 
 	// Save to localstorange on change
 	useEffect(() => {
