@@ -178,7 +178,7 @@ function App() {
 				</div>
 			</div>
 			
-			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} onSave={saveFile} onLoad={loadFile} cps={cps} setCps={setCps} />
+			<MusicControls handlePlayStop={togglePlaying} handleShowCode={() => setShowCodeDialog(true)} onSave={saveFile} onLoad={loadFile} cps={cps} setCps={(c) => {setCps(c); updateSong()}} />
 			
 			{/* Code Dialog */}
 			{showCodeDialog && (<CodeDialog handleCloseDialog={() => setShowCodeDialog(false)} code={generateSongCode()} updateGraph={updateGraph} />)}

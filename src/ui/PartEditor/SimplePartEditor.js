@@ -8,13 +8,18 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   const [notes, setNotes] = useState(part.notes.join(' '));
   const [gain, setGain] = useState(part.gain);
 
-  // Saves and updates part
-  function handleSave() {
+  function getNewPart() {
     let newPart = part;
     newPart.title = title;
     newPart.instrument = instrument;
     newPart.notes = notes.split(' ').filter(note => note.trim() !== '');
     newPart.gain = gain;
+    return newPart;
+  }
+  
+  // Saves and updates part
+  function handleSave() {
+    let newPart = getNewPart();
     onSave(newPart);
     onClose();
   }
@@ -28,9 +33,10 @@ export function SimplePartEditor ({ part, onSave, onClose, onDelete }) {
   // Converts simple part to code part
   function convertToCode() {
     console.log(part);
-    Object.setPrototypeOf(part, SimplePart.prototype);
-    let codePart = new CodePart(title, part.toCode());
-    codePart.id = part.id;
+    let simplePart = getNewPart();
+    Object.setPrototypeOf(simplePart, SimplePart.prototype);
+    let codePart = new CodePart(title, simplePart.toCode());
+    codePart.id = simplePart.id;
     onSave(codePart);
   }
 

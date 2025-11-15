@@ -30,8 +30,7 @@ export function PartCard({ part, onUpdate, edit }) {
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div>
-            <h6 className="card-subtitle mb-1 text-muted">part</h6>
-            <p className="card-text mb-0">{part.name}</p>
+            <p className="card-text mb-0">{part.instrument}</p>
           </div>
           <div className="form-check form-switch">
             <input
