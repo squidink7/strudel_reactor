@@ -53,4 +53,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 Builds the app for production to the `build` folder.
 
-<img src="https://www.clipartmax.com/png/full/220-2203688_it-werks-on-my-machine-works-on-my-machine-sticker.png" alt="works on my machine" width="100"/>
+### Video Guide
+
+A demo video is included in the assignment submission.
+
+The song used in the video was sourced from https://github.com/eefano/strudel-songs-collection/blob/main/shanghai.js
