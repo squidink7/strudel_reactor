@@ -63,8 +63,8 @@ function App() {
 	// Save to localstorange on change
 	useEffect(() => {
 		if (!loaded) return;
-		localStorage.setItem('savedata', JSON.stringify([parts, arrangements]));
-	}, [parts, arrangements, loaded]);
+		localStorage.setItem('savedata', JSON.stringify([parts, arrangements, cps]));
+	}, [parts, arrangements, cps, loaded]);
 
 	
 	function loadFile(file) {
@@ -74,6 +74,7 @@ function App() {
 			fileReader.onload = event => {
 				if (event.target) {
 					try {
+						console.log("hdufsdui");
 						JSON.parse(event.target.result);
 					} catch (error) {
 						alert('Invalid save file!');
@@ -92,7 +93,7 @@ function App() {
 	// Save application state as json
 	function saveFile() {
 		const element = document.createElement("a");
-		const file = new Blob([JSON.stringify([parts, arrangements])], {type: 'application/json'});
+		const file = new Blob([JSON.stringify([parts, arrangements, cps])], {type: 'application/json'});
 		element.href = URL.createObjectURL(file);
 		element.download = "composition.json";
 		document.body.appendChild(element);
@@ -107,7 +108,7 @@ function App() {
 			console.log("Error parsing save data");
 			return;
 		}
-		if (!saveData || saveData.length === undefined || saveData.length !== 2) {
+		if (!saveData || saveData.length === undefined || saveData.length < 2) {
 			return;
 		}
 		let newParts = [];
@@ -127,6 +128,10 @@ function App() {
 			newArrangements.push(Object.setPrototypeOf(a, Arrangement.prototype));
 		});
 		setArrangements(newArrangements);
+
+		if (saveData[2]) {
+			setCps(saveData[2]);
+		}
 	}
 
 	// Create new part

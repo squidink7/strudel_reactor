@@ -26,7 +26,7 @@ export function ArrangementsView({ arrangementId, arrangements, updateArrangemen
 		let newSections = [...arr.sections];
 		
 		for (let i=0; i<newSections.length; i++) {
-			if (newSections[i].id && newSection.id) {
+			if (newSections[i].id === newSection.id) {
 				newSections[i] = newSection;
 			}
 		}

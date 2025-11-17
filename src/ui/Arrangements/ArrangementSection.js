@@ -23,7 +23,7 @@ export function ArrangementSection ({ section, onSectionChange, parts, onDelete 
       let part;
       
       parts.forEach(p => {
-        if (p.id === partId) {
+        if (p.id == partId) {
           part = p;
         }
       });
